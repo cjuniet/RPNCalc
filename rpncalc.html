@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!--
+Copyright (c) 2011, Christophe Juniet <[my first name]@[my family name].net>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-15" />
+<link rel="shortcut icon" href="calculator.ico" />
+<link rel="stylesheet" type="text/css" href="rpncalc.css" />
+<script language="JavaScript" type="text/javascript" src="rpncalc.js"></script>
+<title>RPN Calculator</title>
+</head>
+<body onload="main()" onkeypress="onkey(event)" onkeydown="onspecialkey(event)">
+<table>
+  <tbody>
+    <tr>
+      <td colspan="3" onclick="ondirectkey(event,'\n')"><canvas id="screen" width="640" height="480"></canvas></td>
+      <td id="help" rowspan="2">
+        <table>
+          <tbody>
+            <tr><td colspan="2" class="hs">operators</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'+')"><td class="hi">+</td><td class="ht">addition</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'-')"><td class="hi">-</td><td class="ht">substraction</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'*')"><td class="hi">*</td><td class="ht">multiplication</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'/')"><td class="hi">/</td><td class="ht">division</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'%')"><td class="hi">%</td><td class="ht">modulo</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'@')"><td class="hi">@</td><td class="ht">power</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'n')"><td class="hi">n</td><td class="ht">opposite</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'i')"><td class="hi">i</td><td class="ht">integer part</td></tr>
+            <tr><td colspan="2" class="hs">bit operators</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'&')"><td class="hi">&amp;</td><td class="ht">bitwise and</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'|')"><td class="hi">|</td><td class="ht">bitwise or</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'^')"><td class="hi">^</td><td class="ht">exclusive or</td></tr>
+            <tr><td colspan="2" class="hs">functions</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'l')"><td class="hi">l</td><td class="ht">logarithm</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'r')"><td class="hi">r</td><td class="ht">square root</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'S')"><td class="hi">S</td><td class="ht">sine</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'C')"><td class="hi">C</td><td class="ht">cosine</td></tr>
+            <tr><td colspan="2" class="hs">constants</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'P')"><td class="hi">P</td><td class="ht">&#960;</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'E')"><td class="hi">E</td><td class="ht">e</td></tr>
+            <tr><td colspan="2" class="hs">display switches</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'B')"><td class="hi">B</td><td class="ht">binary</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'O')"><td class="hi">O</td><td class="ht">octal</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'H')"><td class="hi">H</td><td class="ht">hexadecimal</td></tr>
+            <tr><td colspan="2" class="hs">stack operations</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'u')"><td class="hi">u</td><td class="ht">undo</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'D')"><td class="hi">D</td><td class="ht">duplicate</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'q')"><td class="hi">q</td><td class="ht">roll down</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'w')"><td class="hi">w</td><td class="ht">roll up</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'X')"><td class="hi">X</td><td class="ht">delete</td></tr>
+            <tr class="hr" onclick="ondirectkey(event,'z')"><td class="hi">z</td><td class="ht">swap</td></tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td id="trace">RPN Calculator v1.0 - © 2011 c.juniet</td>
+      <td class="numpad">
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td class="numpadkey" onclick="ondirectkey(event,'7')">7</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'8')">8</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'9')">9</td>
+            </tr>
+            <tr>
+              <td class="numpadkey" onclick="ondirectkey(event,'4')">4</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'5')">5</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'6')">6</td>
+            </tr>
+            <tr>
+              <td class="numpadkey" onclick="ondirectkey(event,'1')">1</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'2')">2</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'3')">3</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td class="numpad">
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td class="numpadkey" onclick="ondirectkey(event,'d')">d</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'e')">e</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'f')">f</td>
+            </tr>
+            <tr>
+              <td class="numpadkey" onclick="ondirectkey(event,'a')">a</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'b')">b</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'c')">c</td>
+            </tr>
+            <tr>
+              <td class="numpadkey" onclick="ondirectkey(event,'0')">0</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'.')">.</td>
+              <td class="numpadkey" onclick="ondirectkey(event,'x')">x</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
