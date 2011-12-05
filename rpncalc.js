@@ -1,4 +1,4 @@
-// Copyright (c) 2011 Christophe Juniet <christophe at juniet dot net>
+// Copyright (c) 2011, Christophe Juniet <christophe at juniet dot net>
 // You may do anything with this work that copyright law would normally
 // restrict, so long as you retain the above notice(s) and this license
 // in all redistributed copies and derived works. There is no warranty.
