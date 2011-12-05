@@ -1,16 +1,7 @@
-// Copyright (c) 2011, Christophe Juniet <[my first name]@[my family name].net>
-//
-// Permission to use, copy, modify, and/or distribute this software for any
-// purpose with or without fee is hereby granted, provided that the above
-// copyright notice and this permission notice appear in all copies.
-//
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-// ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-// OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+// Copyright (c) 2011 Christophe Juniet <christophe at juniet dot net>
+// You may do anything with this work that copyright law would normally
+// restrict, so long as you retain the above notice(s) and this license
+// in all redistributed copies and derived works. There is no warranty.
 
 var isChrome = (navigator.userAgent.indexOf('Chrome/')>=0&&navigator.userAgent.indexOf('WebKit')>=0)?true:false;
 var G, W, H, N, S;
@@ -87,29 +78,37 @@ function main() {
   }
 }
 
-function ondirectkey(e, c) {
-  if (c == '\n') {
-    e.keyCode = 13;
-  } else {
-    e.charCode = c.charCodeAt(0);
-  }
-  onkey(e);
+function onkey(e) {
+  if (e.ctrlKey || e.altKey || e.charCode == 0) return;
+  var c = String.fromCharCode(e.charCode);
+  onchar(c);
+  e.preventDefault();
+  e.cancelBubble = true;
 }
 
 function onspecialkey(e) {
-  if (isChrome && (e.keyCode == 8 || e.keyCode == 46)) onkey(e);
+  if (e.ctrlKey || e.altKey || e.charCode != 0) return;
+  var c = '';
+  if (e.keyCode == 13) {
+    c = '\n';
+  } else if (e.keyCode == 8) {
+    c = '\b';
+  } else if (e.keyCode == 46) {
+    c = 'X';
+  }
+  if (c != '') {
+    onchar(c);
+    e.preventDefault();
+    e.cancelBubble = true;
+  }
 }
 
-function onkey(e) {
-  if (e.ctrlKey || e.altKey) return;
-  var c = String.fromCharCode(e.charCode);
-
+function onchar(c) {
+  // undo
   if (c == 'u') {
     var tmp = stack;
     stack = ustack;
     ustack = tmp;
-    e.preventDefault();
-    e.cancelBubble = true;
     draw();
     return;
   }
@@ -119,7 +118,7 @@ function onkey(e) {
   var l = s.length;
   var n = stack.length;
   var oldstack = stack.slice(0, n);
-  if (e.keyCode == 13) { // enter
+  if (c == '\n') { // enter
     if (n >= N) {
       log("stack is full!");
     } else if (l != 0) {
@@ -129,15 +128,8 @@ function onkey(e) {
       stack[0] = stack[1];
       stack.unshift('');
     }
-  } else if (e.keyCode == 8) { // backspace
+  } else if (c == '\b') { // backspace
     if (l != 0) stack[0] = s.substring(0, l-1);
-  } else if (e.keyCode == 46) { // delete
-    if (l != 0) {
-      stack[0] = '';
-    } else if (n > 1) {
-      stack.shift();
-      stack[0] = '';
-    }
   } else if (is_mode(c)) {
     if (c == 'B') mode = (mode ==  2 ? 10 :  2);
     if (c == 'H') mode = (mode == 16 ? 10 : 16);
@@ -295,8 +287,6 @@ function onkey(e) {
 
   if (ok) {
     ustack = oldstack;
-    e.preventDefault();
-    e.cancelBubble = true;
     draw();
   } else {
     stack = oldstack;
